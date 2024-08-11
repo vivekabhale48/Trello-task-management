@@ -30,14 +30,14 @@ export class AuthController {
         res: Response
     ):Promise<void> {
         console.log(userLoginCreds);
-        const {token} = await this.authService.login(userLoginCreds);
+        const {user, token} = await this.authService.login(userLoginCreds);
         res.cookie('token', token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'prod',
             sameSite: 'strict',
             maxAge: 360000
         })
-        res.send({message: 'Login Successful'})
+        res.send({user, message: 'Login Successful'})
     }
 }
 

@@ -26,6 +26,9 @@ export default function Login() {
         const result = await response.json();
         console.log(result);
 
+        // setUserName(result?.user?.name);
+        console.log(result?.user?.name);
+
         if(response.ok) {
             router.push('/');
         }

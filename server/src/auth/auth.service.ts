@@ -29,7 +29,7 @@ export class AuthService {
         return saveUser;
     }
 
-    async login(userDetails: LoginDto):Promise<{token: string}> {
+    async login(userDetails: LoginDto):Promise<{user: User, token: string}> {
 
         const {email, password} = userDetails;
 
@@ -41,6 +41,6 @@ export class AuthService {
         if(!isPassword) throw new UnauthorizedException('Invalid email or password!');
 
         const token = this.jwtService.sign({id: user._id});
-        return {token};
+        return {user, token};
     }
 }
