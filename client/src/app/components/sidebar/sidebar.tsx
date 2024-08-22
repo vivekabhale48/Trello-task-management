@@ -1,10 +1,17 @@
+"use client"
+
+import { useSelector } from "react-redux"
+import { RootState } from "../../redux/store"
+
 export default function Sidebar() {
+    const username = useSelector((state: RootState) => state.user.username)
+
     return (
         <div className="max-w-[285px] bg-white h-[100vh] pt-6 px-4 pb-8 flex flex-col justify-between">
             <div>
                 <div className="flex items-center mb-2">
                     <div className="mr-2"><img src="/sidebar/profile-pic.png" alt="profile pic" /></div>
-                    <h4 className="text-xl">Joe Gardner</h4>
+                    <h4 className="text-xl">{username}</h4>
                 </div>
                 <div className="flex justify-between items-center">
                     <div className="flex items-center gap-x-5">

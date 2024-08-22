@@ -1,8 +1,10 @@
 "use client"
 
+import { setUsername } from "@/app/redux/slice/usernameSlice";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FormEventHandler, useState } from "react"
+import { useDispatch } from "react-redux";
 
 export default function Login() {
 
@@ -10,6 +12,7 @@ export default function Login() {
     const [email, getemail] = useState<string>('');
     const [password, getPassword] = useState<string>('');
     const router = useRouter();
+    const dispatch = useDispatch();
 
     const onSubmit:FormEventHandler<HTMLFormElement> = async(event) => {
         event.preventDefault();
@@ -28,6 +31,7 @@ export default function Login() {
 
         // setUserName(result?.user?.name);
         console.log(result?.user?.name);
+        dispatch(setUsername(result?.user?.name));
 
         if(response.ok) {
             router.push('/');
