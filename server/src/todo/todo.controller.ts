@@ -25,7 +25,7 @@ export class TodoController {
         @Req()
         requestedUser: any
     ):Promise<Todo> {
-
+        console.log(ticketDetails);
         return this.todoService.saveATicket(ticketDetails, requestedUser.user._id);
     }
 }
