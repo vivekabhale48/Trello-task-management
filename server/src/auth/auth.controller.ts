@@ -40,6 +40,15 @@ export class AuthController {
         })
         res.send({user, message: 'Login Successful'})
     }
+
+    @Post('logout')
+    async logout(
+        @Res()
+        res: Response
+    ) {
+        res.cookie('token', '', {httpOnly: true, secure: true, sameSite: 'strict', maxAge: 0});
+        res.status(200).json({message: 'Logged out successfully!'});
+    }
 }
 
 

@@ -2,9 +2,25 @@
 
 import { useSelector } from "react-redux"
 import { RootState } from "../../redux/store"
+import { useRouter } from "next/navigation"
 
 export default function Sidebar() {
+    const router = useRouter();
     const username = useSelector((state: RootState) => state.user.username)
+
+    const handleLogout = async() => {
+        const response = await fetch('http://localhost:8080/auth/logout', {
+            method: 'POST',
+            credentials: 'include'
+        })
+
+        if(response.ok) {
+            router.push('/login');
+        }
+        else {
+            console.error('Failed to logout!')
+        }
+    }
 
     return (
         <div className="max-w-[285px] bg-white h-[100vh] pt-6 px-4 pb-8 flex flex-col justify-between">
@@ -19,7 +35,7 @@ export default function Sidebar() {
                         <img src="/sidebar/mode-icon.svg" alt="mode" />
                         <img src="/sidebar/skip-icon.svg" alt="skip" />
                     </div>
-                    <div className="bg-[#F7F7F7] text-[#797979] py-[10px] px-2 rounded cursor-pointer bg-btn-gradient transition-all duration-200">
+                    <div onClick={handleLogout} className="bg-[#F7F7F7] text-[#797979] py-[10px] px-2 rounded cursor-pointer bg-btn-gradient transition-all duration-200">
                         Logout
                     </div>
                 </div>
