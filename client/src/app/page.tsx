@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "./redux/store";
 import { useEffect, useState } from "react";
 import TaskColumn from "./components/TaskColumns/taskColumn";
-interface Task {
+interface TaskMove {
   createdAt: string;
   deadline: string;
   description: string;
@@ -23,7 +23,9 @@ interface Task {
 export default function Home() {
   const username = useSelector((state: RootState) => state.user.username);
   const [task, setTask] = useState<any[]>([]);
+  const [taskCopy, setTaskCopy] = useState<any[]>([]);
   const [activeCard, setactiveCard] = useState(null);
+  const [searchTask, setSearchTask] = useState('');
 
   useEffect(() => {
     getAllTickets();
@@ -41,6 +43,7 @@ export default function Home() {
     const result = await response.json()
     console.log(result)
     setTask(result);
+    setTaskCopy(result);
   }
 
   function onDrop(status:string, position: number) {
@@ -55,10 +58,11 @@ export default function Home() {
       status: status
     })
     setTask(updatedTasks);
+    setTaskCopy(updatedTasks);
     updateTicketStatus(taskToMove, status)
   }
 
-  async function updateTicketStatus(taskToMove:Task, status:string) {
+  async function updateTicketStatus(taskToMove:TaskMove, status:string) {
     const response = await fetch('http://localhost:8080/todo/update-todo', {
       method: 'PUT',
       headers: {
@@ -68,6 +72,18 @@ export default function Home() {
       credentials: 'include',
     })
     console.log(response);
+  }
+
+  function onSearch(value:string) {
+    setSearchTask(value);
+    
+    let updatedSearchArray = taskCopy;
+    if (value.trim() !== '') {
+      updatedSearchArray = taskCopy.filter((task) =>
+        task.title.toLowerCase().includes(value.toLowerCase())
+      );
+    }
+    setTask(updatedSearchArray);
   }
 
   return (
@@ -90,7 +106,7 @@ export default function Home() {
         </div>
         <div className="mt-4 flex items-center justify-between">
           <div className="flex bg-white p-1 w-[196px] h-[40px] rounded has-[:focus]:border-[1.5px] has-[:focus-within]:border-[1.5px] has-[:focus]:border-black has-[:focus-within]:border-black">
-            <input type="text" className="bg-transparent w-full focus-within:outline-none focus:outline-none" placeholder="Search" />
+            <input value={searchTask} onChange={(e) => onSearch(e.target.value)} type="text" className="bg-transparent w-full focus-within:outline-none focus:outline-none" placeholder="Search" />
             <img src='/search-icon.svg' alt="search-icon" />
           </div>
 
