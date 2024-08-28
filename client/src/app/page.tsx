@@ -41,15 +41,12 @@ export default function Home() {
     })
 
     const result = await response.json()
-    console.log(result)
     setTask(result);
     setTaskCopy(result);
   }
 
   function onDrop(status:string, position: number) {
-    console.log(`${activeCard} is trying to drop in ${status} and at position ${position}`);
     if(activeCard === null || activeCard === undefined) return;
-    console.log(task[activeCard])
 
     const taskToMove = task[activeCard];
     const updatedTasks = task.filter((t, index) => index !== activeCard);
@@ -71,12 +68,11 @@ export default function Home() {
       body: JSON.stringify({status:status, updateTicketId:taskToMove._id}),
       credentials: 'include',
     })
-    console.log(response);
   }
 
   function onSearch(value:string) {
     setSearchTask(value);
-    
+
     let updatedSearchArray = taskCopy;
     if (value.trim() !== '') {
       updatedSearchArray = taskCopy.filter((task) =>
