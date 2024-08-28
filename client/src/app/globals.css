@@ -2,3 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+
+.bg-btn-gradient:hover {
+    background: linear-gradient(to top, #2F2188, #4C38C2);
+    color: white;
+}
+  

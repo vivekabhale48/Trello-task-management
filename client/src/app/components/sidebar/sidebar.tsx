@@ -19,7 +19,7 @@ export default function Sidebar() {
                         <img src="/sidebar/mode-icon.svg" alt="mode" />
                         <img src="/sidebar/skip-icon.svg" alt="skip" />
                     </div>
-                    <div className="bg-[#F7F7F7] text-[#797979] py-[10px] px-2 rounded">
+                    <div className="bg-[#F7F7F7] text-[#797979] py-[10px] px-2 rounded cursor-pointer bg-btn-gradient transition-all duration-200">
                         Logout
                     </div>
                 </div>

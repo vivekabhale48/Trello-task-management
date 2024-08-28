@@ -35,7 +35,8 @@ export class AuthController {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'prod',
             sameSite: 'strict',
-            maxAge: 600000
+            // maxAge: 600000
+            maxAge: 3600000
         })
         res.send({user, message: 'Login Successful'})
     }

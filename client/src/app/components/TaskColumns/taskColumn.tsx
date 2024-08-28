@@ -1,4 +1,6 @@
 import TaskCard from "./taskCard"
+import DropArea from "./DropArea"
+import React from "react"
 
 export enum Status {
     TODO ='todo',
@@ -25,9 +27,11 @@ interface TaskColumnProps {
     title: string,
     tasks: Task[],
     status: string
+    setactiveCard: any
+    onDrop:any
 }
 
-export default function TaskColumn({title, tasks, status}: TaskColumnProps) {
+export default function TaskColumn({title, tasks, status, setactiveCard, onDrop}: TaskColumnProps) {
 
     return(
         <div className="flex flex-col">
@@ -35,20 +39,28 @@ export default function TaskColumn({title, tasks, status}: TaskColumnProps) {
               <span className="text-xl text-[#555555]">{title}</span>
               <img src="/more-icon.svg" alt="more-icon" />
             </div>
+            <DropArea 
+                onDrop={()=> onDrop(status, 0)}
+            />
             <div>
                 {
                     tasks.map((task, index) => 
                         task.status == status && (
-                            <TaskCard 
-                                key={index}
-                                title={task.title}
-                                description={task.description}
-                                status={task.status}
-                                priority={task.priority}
-                                deadline={task.deadline}
-                                createdAt={task.createdAt}
-                                index={index}
-                            />
+                            <React.Fragment key={index}>
+                                <TaskCard 
+                                    title={task.title}
+                                    description={task.description}
+                                    status={task.status}
+                                    priority={task.priority}
+                                    deadline={task.deadline}
+                                    createdAt={task.createdAt}
+                                    index={index}
+                                    setactiveCard={setactiveCard}
+                                />
+                                <DropArea 
+                                    onDrop={()=> onDrop(status, index+1)}
+                                />
+                            </React.Fragment>
                         )
                     )
                 }

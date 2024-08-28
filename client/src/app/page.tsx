@@ -7,10 +7,23 @@ import { useSelector } from "react-redux";
 import { RootState } from "./redux/store";
 import { useEffect, useState } from "react";
 import TaskColumn from "./components/TaskColumns/taskColumn";
+interface Task {
+  createdAt: string;
+  deadline: string;
+  description: string;
+  priority: string;
+  reporters: string;
+  status: string;
+  title: string;
+  updatedAt: string;
+  __v: number;
+  _id: string;
+}
 
 export default function Home() {
   const username = useSelector((state: RootState) => state.user.username);
-  const [task, setTask] = useState([]);
+  const [task, setTask] = useState<any[]>([]);
+  const [activeCard, setactiveCard] = useState(null);
 
   useEffect(() => {
     getAllTickets();
@@ -28,6 +41,33 @@ export default function Home() {
     const result = await response.json()
     console.log(result)
     setTask(result);
+  }
+
+  function onDrop(status:string, position: number) {
+    console.log(`${activeCard} is trying to drop in ${status} and at position ${position}`);
+    if(activeCard === null || activeCard === undefined) return;
+    console.log(task[activeCard])
+
+    const taskToMove = task[activeCard];
+    const updatedTasks = task.filter((t, index) => index !== activeCard);
+    updatedTasks.splice(position, 0, {
+      ...taskToMove,
+      status: status
+    })
+    setTask(updatedTasks);
+    updateTicketStatus(taskToMove, status)
+  }
+
+  async function updateTicketStatus(taskToMove:Task, status:string) {
+    const response = await fetch('http://localhost:8080/todo/update-todo', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({status:status, updateTicketId:taskToMove._id}),
+      credentials: 'include',
+    })
+    console.log(response);
   }
 
   return (
@@ -83,21 +123,29 @@ export default function Home() {
             title="To Do"
             tasks={task}
             status="todo"
+            setactiveCard={setactiveCard}
+            onDrop={onDrop}
           />
           <TaskColumn 
             title="In Progress"
             tasks={task}
             status="in progress"
+            setactiveCard={setactiveCard}
+            onDrop={onDrop}
           />
           <TaskColumn 
             title="Under review"
             tasks={task}
             status="under review"
+            setactiveCard={setactiveCard}
+            onDrop={onDrop}
           />
           <TaskColumn 
             title="Finished"
             tasks={task}
             status="finished"
+            setactiveCard={setactiveCard}
+            onDrop={onDrop}
           />
         </div>
       </div>
