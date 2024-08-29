@@ -1,9 +1,10 @@
 import TaskCard from "./taskCard"
 import DropArea from "./DropArea"
 import React from "react"
+import AddNewCta from "../cta/addNewCta"
 
 export enum Status {
-    TODO ='todo',
+    TODO = 'todo',
     INPROGRESS = 'in progress',
     UNDERREVIEW = 'under review',
     FINISED = 'finished'
@@ -28,26 +29,26 @@ interface TaskColumnProps {
     tasks: Task[],
     status: string
     setactiveCard: any
-    onDrop:any
+    onDrop: any
 }
 
-export default function TaskColumn({title, tasks, status, setactiveCard, onDrop}: TaskColumnProps) {
+export default function TaskColumn({ title, tasks, status, setactiveCard, onDrop }: TaskColumnProps) {
 
-    return(
+    return (
         <div className="flex flex-col">
             <div className="flex justify-between items-center">
-              <span className="text-xl text-[#555555]">{title}</span>
-              <img src="/more-icon.svg" alt="more-icon" />
+                <span className="text-xl text-[#555555]">{title}</span>
+                <img src="/more-icon.svg" alt="more-icon" />
             </div>
-            <DropArea 
-                onDrop={()=> onDrop(status, 0)}
+            <DropArea
+                onDrop={() => onDrop(status, 0)}
             />
             <div>
                 {
-                    tasks.map((task, index) => 
+                    tasks.map((task, index) =>
                         task.status == status && (
                             <React.Fragment key={index}>
-                                <TaskCard 
+                                <TaskCard
                                     title={task.title}
                                     description={task.description}
                                     status={task.status}
@@ -57,9 +58,10 @@ export default function TaskColumn({title, tasks, status, setactiveCard, onDrop}
                                     index={index}
                                     setactiveCard={setactiveCard}
                                 />
-                                <DropArea 
-                                    onDrop={()=> onDrop(status, index+1)}
+                                <DropArea
+                                    onDrop={() => onDrop(status, index + 1)}
                                 />
+                                <AddNewCta status={status} />
                             </React.Fragment>
                         )
                     )
