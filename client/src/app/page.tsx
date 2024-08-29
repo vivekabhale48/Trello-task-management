@@ -3,10 +3,11 @@
 import Sidebar from "./components/sidebar/sidebar";
 import { TOP_TAGS } from "./data";
 import TopPageComponent from "./components/topPageSection/topPage";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "./redux/store";
 import { useEffect, useState } from "react";
 import TaskColumn from "./components/TaskColumns/taskColumn";
+import { setUsername } from "./redux/slice/usernameSlice";
 interface TaskMove {
   createdAt: string;
   deadline: string;
@@ -26,10 +27,25 @@ export default function Home() {
   const [taskCopy, setTaskCopy] = useState<any[]>([]);
   const [activeCard, setactiveCard] = useState(null);
   const [searchTask, setSearchTask] = useState('');
+  const dispatch = useDispatch();
 
   useEffect(() => {
     getAllTickets();
+    findLoggedInUser();
   }, [])
+
+  async function findLoggedInUser() {
+    const response = await fetch('http://localhost:8080/auth/user', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include'
+    })
+
+    const result = await response.json()
+    dispatch(setUsername(result?.user?.name));
+  }
 
   async function getAllTickets() {
     const response = await fetch('http://localhost:8080/todo', {

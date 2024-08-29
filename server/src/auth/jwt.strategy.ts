@@ -27,10 +27,9 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     }
 
     async validate(payload:any) {
-        console.log(payload);
         const { id } = payload;
-
-        const user = this.userModel.findById(id);
+        //send user except password.
+        const user = this.userModel.findById(id).select('-password');
 
         if(!user) {
             throw new UnauthorizedException('LOgin first to access the Home page.')

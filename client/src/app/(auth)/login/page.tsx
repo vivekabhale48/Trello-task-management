@@ -1,6 +1,5 @@
 "use client"
 
-import { setUsername } from "@/app/redux/slice/usernameSlice";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FormEventHandler, useState } from "react"
@@ -16,7 +15,6 @@ export default function Login() {
 
     const onSubmit:FormEventHandler<HTMLFormElement> = async(event) => {
         event.preventDefault();
-        console.log({email, password});
         const response = await fetch('http://localhost:8080/auth/login', {
             method: 'POST',
             headers: {
@@ -25,13 +23,6 @@ export default function Login() {
             body: JSON.stringify({email, password}),
             credentials: 'include',
           });
-        
-        const result = await response.json();
-        console.log(result);
-
-        // setUserName(result?.user?.name);
-        console.log(result?.user?.name);
-        dispatch(setUsername(result?.user?.name));
 
         if(response.ok) {
             router.push('/');
