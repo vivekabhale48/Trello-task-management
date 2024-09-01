@@ -8,6 +8,7 @@ import { RootState } from "./redux/store";
 import { useEffect, useState } from "react";
 import TaskColumn from "./components/TaskColumns/taskColumn";
 import { setUsername } from "./redux/slice/usernameSlice";
+import TicketSidebar from "./components/addticketsidebar/ticketSidebar";
 interface TaskMove {
   createdAt: string;
   deadline: string;
@@ -101,6 +102,7 @@ export default function Home() {
   return (
     <main className="flex">
       <Sidebar></Sidebar>
+      <TicketSidebar />
       <div className="flex-1 pt-6 pr-8 pl-4">
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-[48px] font-semibold">Good Morning, {username}!</h1>
@@ -177,6 +179,7 @@ export default function Home() {
           />
         </div>
       </div>
+
     </main>
   );
 }

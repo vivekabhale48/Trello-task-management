@@ -61,12 +61,13 @@ export default function TaskColumn({ title, tasks, status, setactiveCard, onDrop
                                 <DropArea
                                     onDrop={() => onDrop(status, index + 1)}
                                 />
-                                <AddNewCta status={status} />
+                                
                             </React.Fragment>
                         )
                     )
                 }
             </div>
+            <AddNewCta />
         </div>
     )
 }
