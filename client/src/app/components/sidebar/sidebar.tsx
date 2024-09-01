@@ -1,10 +1,12 @@
 "use client"
 
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../../redux/store"
 import { useRouter } from "next/navigation"
+import { setCreateDrawerVisibility } from "@/app/redux/slice/usernameSlice";
 
 export default function Sidebar() {
+    const dispatch = useDispatch();
     const router = useRouter();
     const username = useSelector((state: RootState) => state.user.username)
 
@@ -63,7 +65,9 @@ export default function Sidebar() {
                         </li>
                     </ul>
                 </div>
-                <div className="py-[14px] px-[30px] rounded-lg bg-gradient-to-t from-[#4C38C2] to-[#2F2188] flex justify-center items-center">
+                <div
+                    onClick={() => dispatch(setCreateDrawerVisibility(true))}
+                    className="cursor-pointer py-[14px] px-[30px] rounded-lg bg-gradient-to-t from-[#4C38C2] to-[#2F2188] flex justify-center items-center">
                     <span className="text-white mr-2 text-xl">Create new Task</span>
                     <img src="/sidebar/plus-icon.svg" alt="plus icon" />
                 </div>

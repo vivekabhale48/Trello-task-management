@@ -7,8 +7,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "./redux/store";
 import { useEffect, useState } from "react";
 import TaskColumn from "./components/TaskColumns/taskColumn";
-import { setUsername } from "./redux/slice/usernameSlice";
+import { setCreateDrawerVisibility, setUsername } from "./redux/slice/usernameSlice";
 import TicketSidebar from "./components/addticketsidebar/ticketSidebar";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 interface TaskMove {
   createdAt: string;
   deadline: string;
@@ -24,6 +25,7 @@ interface TaskMove {
 
 export default function Home() {
   const username = useSelector((state: RootState) => state.user.username);
+  const createDrawerVisibility = useSelector((state: RootState) => state.user.createDrawerVisibility);
   const [task, setTask] = useState<any[]>([]);
   const [taskCopy, setTaskCopy] = useState<any[]>([]);
   const [activeCard, setactiveCard] = useState(null);
@@ -102,7 +104,18 @@ export default function Home() {
   return (
     <main className="flex">
       <Sidebar></Sidebar>
-      <TicketSidebar />
+
+      <Sheet 
+        open={createDrawerVisibility}
+        onOpenChange={(status) => dispatch(setCreateDrawerVisibility(status))}
+      >
+        <SheetContent
+          side='right'
+          className="w-full !max-w-[670px]"
+        >
+          <TicketSidebar />
+        </SheetContent>
+      </Sheet>
       <div className="flex-1 pt-6 pr-8 pl-4">
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-[48px] font-semibold">Good Morning, {username}!</h1>
@@ -141,7 +154,9 @@ export default function Home() {
               <span>Share</span>
               <img className="ml-[14px] mr-2" src="share-icon.svg" alt="share" />
             </div>
-            <div className="p-2 rounded-lg bg-gradient-to-t from-[#4C38C2] to-[#2F2188] flex justify-center items-center">
+            <div 
+              onClick={() => dispatch(setCreateDrawerVisibility(true))}
+              className="p-2 rounded-lg bg-gradient-to-t from-[#4C38C2] to-[#2F2188] flex justify-center items-center cursor-pointer">
               <span className="text-white mr-2 text-xl">Create Task</span>
               <img src="/sidebar/plus-icon.svg" alt="plus icon" />
             </div>
