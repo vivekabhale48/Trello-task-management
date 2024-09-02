@@ -1,9 +1,16 @@
 import { setCreateDrawerVisibility } from "@/app/redux/slice/usernameSlice";
 import { RootState } from "@/app/redux/store";
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { cn } from "@/lib/utils";
+import { format } from "date-fns";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 export default function TicketSidebar() {
+    const [date, setDate] = useState<Date | undefined>(new Date())
 
   const dispatch = useDispatch();
 
@@ -60,7 +67,9 @@ export default function TicketSidebar() {
                     <div> 
                         <Select>
                             <SelectTrigger>
-                                <SelectValue placeholder='Not selected' />
+                                <SelectValue 
+                                    placeholder='Not selected' 
+                                />
                             </SelectTrigger>
                             <SelectContent>
                                 <SelectItem value="todo">Low</SelectItem>
@@ -76,12 +85,33 @@ export default function TicketSidebar() {
                         <img src="/ticketsidebar/deadline-icon.svg" alt="deadline-icon" />
                         <span>Deadline</span>
                     </div>
-                    <div> 
-                        <Select>
-                            <SelectTrigger>
-                                <SelectValue placeholder='Not selected' />
-                            </SelectTrigger>
-                        </Select>
+                    <div>
+                        <Popover>
+                            <PopoverTrigger asChild>
+                                <Button
+                                    variant="ghost"
+                                    className={cn(
+                                        "w-full justify-start text-left font-normal text-[16px] text-[#C1BCBD] px-3"
+                                    )}
+                                >
+                                    {
+                                        date ? (
+                                            format(date, "PPP")
+                                        ) : (
+                                            <span>Not Selected</span>
+                                        )
+                                    }
+                                </Button>
+                            </PopoverTrigger>
+                            <PopoverContent>
+                                <Calendar
+                                    mode="single"
+                                    selected={date ? new Date(date) : undefined}
+                                    onSelect={setDate}
+                                    className="rounded-md border"
+                                />
+                            </PopoverContent>
+                        </Popover>
                     </div>
                 </div>
                 <div className="flex items-center gap-x-10 text-[16px] mb-8">
