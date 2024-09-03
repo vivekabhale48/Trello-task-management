@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import TaskColumn from "./components/TaskColumns/taskColumn";
 import { setCreateDrawerVisibility, setUsername } from "./redux/slice/usernameSlice";
 import TicketSidebar from "./components/addticketsidebar/ticketSidebar";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetDescription, SheetTitle } from "@/components/ui/sheet";
 interface TaskMove {
   createdAt: string;
   deadline: string;
@@ -26,6 +26,7 @@ interface TaskMove {
 export default function Home() {
   const username = useSelector((state: RootState) => state.user.username);
   const createDrawerVisibility = useSelector((state: RootState) => state.user.createDrawerVisibility);
+  const checkTicketCreateUpdate = useSelector((state: RootState) => state.user.checkTicketCreateUpdate);
   const [task, setTask] = useState<any[]>([]);
   const [taskCopy, setTaskCopy] = useState<any[]>([]);
   const [activeCard, setactiveCard] = useState(null);
@@ -34,6 +35,9 @@ export default function Home() {
 
   useEffect(() => {
     getAllTickets();
+  }, [checkTicketCreateUpdate])
+
+  useEffect(() => {
     findLoggedInUser();
   }, [])
 
@@ -109,11 +113,13 @@ export default function Home() {
         open={createDrawerVisibility}
         onOpenChange={(status) => dispatch(setCreateDrawerVisibility(status))}
       >
+        <SheetTitle className="hidden" />
         <SheetContent
           side='right'
           className="w-full !max-w-[670px]"
         >
-          <TicketSidebar />
+            <SheetDescription className="hidden" aria-describedby={undefined} />
+              <TicketSidebar />             
         </SheetContent>
       </Sheet>
       <div className="flex-1 pt-6 pr-8 pl-4">

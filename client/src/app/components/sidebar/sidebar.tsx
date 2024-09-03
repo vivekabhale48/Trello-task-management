@@ -25,7 +25,7 @@ export default function Sidebar() {
     }
 
     return (
-        <div className="max-w-[285px] bg-white h-[100vh] pt-6 px-4 pb-8 flex flex-col justify-between">
+        <div className="max-w-[285px] bg-white h-[100vh] max-h-full pt-6 px-4 pb-8 flex flex-col justify-between">
             <div>
                 <div className="flex items-center mb-2">
                     <div className="mr-2"><img src="/sidebar/profile-pic.png" alt="profile pic" /></div>

@@ -34,8 +34,8 @@ export class Todo {
     @Prop()
     priority: Priority;
 
-    @Prop()
-    deadline: string;
+    @Prop({type: Date})
+    deadline: Date;
 
     @Prop()
     attachments: string;

@@ -2,12 +2,15 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface UserState {
     username: string,
-    createDrawerVisibility: boolean
+    createDrawerVisibility: boolean,
+    checkTicketCreateUpdate: boolean
 }
 const initialState: UserState = {
     username: '',
     createDrawerVisibility: false,
+    checkTicketCreateUpdate: false
 }
+
 const usernameSlice = createSlice({
     name: 'user',
     initialState,
@@ -17,10 +20,13 @@ const usernameSlice = createSlice({
         },
         setCreateDrawerVisibility: (state, action: PayloadAction<UserState["createDrawerVisibility"]>) => {
             state.createDrawerVisibility = action.payload
+        },
+        setCheckTicketCreateUpdate: (state, action: PayloadAction<UserState["checkTicketCreateUpdate"]>) => {
+            state.checkTicketCreateUpdate = action.payload
         }
     }
 })
 
-export const { setUsername, setCreateDrawerVisibility } = usernameSlice.actions;
+export const { setUsername, setCreateDrawerVisibility, setCheckTicketCreateUpdate } = usernameSlice.actions;
 
 export default usernameSlice.reducer;

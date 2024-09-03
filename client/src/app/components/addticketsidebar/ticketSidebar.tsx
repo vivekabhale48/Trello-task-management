@@ -1,4 +1,4 @@
-import { setCreateDrawerVisibility } from "@/app/redux/slice/usernameSlice";
+import { setCheckTicketCreateUpdate, setCreateDrawerVisibility } from "@/app/redux/slice/usernameSlice";
 import { RootState } from "@/app/redux/store";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -6,13 +6,48 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 export default function TicketSidebar() {
-    const [date, setDate] = useState<Date | undefined>(new Date())
+    const dispatch = useDispatch();
+    const [date, setDate] = useState<Date | undefined>(undefined)
+    const [title, setTitle] = useState<string>('');
+    const [status, setStatus] = useState<string>('');
+    const [priority, setPriority] = useState<string>('');
+    const [description, setDescription] = useState<string>('');
+    const checkTicketCreateUpdate = useSelector((state: RootState) => state.user.checkTicketCreateUpdate);
 
-  const dispatch = useDispatch();
+    
+    useEffect(() => {
+        document.addEventListener('keydown', handleKeyDownFunction)
+
+        return () => document.removeEventListener('keydown', handleKeyDownFunction);
+        
+    }, [date, title, description, status, priority])
+
+    function handleKeyDownFunction(event: KeyboardEvent) {
+        if(event.key === 'Enter' && date && title !== '' && status !== '' && priority !== '' && description !== '') {
+            createATicket();
+        }
+    }
+
+    async function createATicket() {
+        const deadline = date?.toISOString();
+        const response = await fetch('http://localhost:8080/todo/create-todo', {
+            method: 'POST',
+            body: JSON.stringify({title, description, status, priority, deadline}),
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include'
+        })
+
+        const result = await response.json()
+        console.log(result)
+        dispatch(setCheckTicketCreateUpdate(!checkTicketCreateUpdate));
+        dispatch(setCreateDrawerVisibility(false))
+    }
 
     return (
         <div>
@@ -38,7 +73,7 @@ export default function TicketSidebar() {
 
             <div className="mt-[27px]">
                 <div className="mb-8">
-                    <input className="text-[48px] focus-within:outline-none font-semibold w-full p-2 placeholder-[#cccccc]" placeholder="Title" type="text" />
+                    <input value={title} onChange={(e) => setTitle(e.target.value)} className="text-[48px] focus-within:outline-none font-semibold w-full p-2 placeholder-[#cccccc]" placeholder="Title" type="text" />
                 </div>
                 <div className="flex items-center gap-x-10 text-[16px] mb-8">
                     <div className="w-[200px] flex items-center gap-x-5 text-[#666666] text-[16px]">
@@ -46,14 +81,17 @@ export default function TicketSidebar() {
                         <span>Status</span>
                     </div>
                     <div> 
-                        <Select>
+                        <Select
+                            value={status}
+                            onValueChange={(val) => setStatus(val)}
+                        >
                             <SelectTrigger>
                                 <SelectValue placeholder='Not selected' />
                             </SelectTrigger>
                             <SelectContent>
                                 <SelectItem value="todo">To Do</SelectItem>
-                                <SelectItem value="inprogress">In Progress</SelectItem>
-                                <SelectItem value="underreview">Under Review</SelectItem>
+                                <SelectItem value="in progress">In Progress</SelectItem>
+                                <SelectItem value="under review">Under Review</SelectItem>
                                 <SelectItem value="finished">Finished</SelectItem>
                             </SelectContent>
                         </Select>
@@ -65,17 +103,20 @@ export default function TicketSidebar() {
                         <span>Priority</span>
                     </div>
                     <div> 
-                        <Select>
+                        <Select
+                            value={priority}
+                            onValueChange={(val) => setPriority(val)}
+                        >
                             <SelectTrigger>
                                 <SelectValue 
                                     placeholder='Not selected' 
                                 />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem value="todo">Low</SelectItem>
-                                <SelectItem value="inprogress">Medium</SelectItem>
-                                <SelectItem value="underreview">High</SelectItem>
-                                <SelectItem value="finished">Urgent</SelectItem>
+                                <SelectItem value="low">Low</SelectItem>
+                                <SelectItem value="medium">Medium</SelectItem>
+                                <SelectItem value="high">High</SelectItem>
+                                <SelectItem value="urgent">Urgent</SelectItem>
                             </SelectContent>
                         </Select>
                     </div>
@@ -91,14 +132,14 @@ export default function TicketSidebar() {
                                 <Button
                                     variant="ghost"
                                     className={cn(
-                                        "w-full justify-start text-left font-normal text-[16px] text-[#C1BCBD] px-3"
+                                        "w-full justify-start text-left font-normal text-[16px] px-3"
                                     )}
                                 >
                                     {
                                         date ? (
                                             format(date, "PPP")
                                         ) : (
-                                            <span>Not Selected</span>
+                                            <span className="text-[#C1BCBD]">Not Selected</span>
                                         )
                                     }
                                 </Button>
@@ -120,6 +161,7 @@ export default function TicketSidebar() {
                         <span>Description</span>
                     </div>
                     <div>
+                        <input value={description} onChange={(e) => setDescription(e.target.value)} className="text-[16px] focus-within:outline-none w-full px-3 py-2 placeholder-[#cccccc]" placeholder="Not Selected" type="text" />
                     </div>
                 </div>
             </div>

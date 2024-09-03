@@ -1,6 +1,7 @@
 import { User } from "src/auth/schemas/user.schema";
 import { Priority, Status } from "../schemas/todo.schema";
 import { IsDate, IsEmpty, IsEnum, IsNotEmpty, IsOptional, IsString } from "class-validator";
+import { Type } from "class-transformer";
 
 export class CreateTicketDto {
 
@@ -21,8 +22,9 @@ export class CreateTicketDto {
     readonly priority: Priority;
 
     @IsNotEmpty()
-    @IsString()
-    readonly deadline: string;
+    @IsDate({message: 'Please enter a valid date!'})
+    @Type(() => Date)
+    readonly deadline: Date;
 
     @IsOptional()
     @IsString()

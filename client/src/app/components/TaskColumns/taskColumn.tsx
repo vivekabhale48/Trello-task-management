@@ -20,7 +20,7 @@ type Task = {
     description: string,
     status: Status,
     priority: Priority,
-    deadline: string
+    deadline: Date
     createdAt: string
 }
 
