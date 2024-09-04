@@ -20,8 +20,10 @@ type Task = {
     description: string,
     status: Status,
     priority: Priority,
-    deadline: Date
-    createdAt: string
+    deadline: Date,
+    createdAt: string,
+    updatedAt: Date,
+    _id: string,
 }
 
 interface TaskColumnProps {
@@ -57,6 +59,7 @@ export default function TaskColumn({ title, tasks, status, setactiveCard, onDrop
                                     createdAt={task.createdAt}
                                     index={index}
                                     setactiveCard={setactiveCard}
+                                    ticketId={task._id}
                                 />
                                 <DropArea
                                     onDrop={() => onDrop(status, index + 1)}

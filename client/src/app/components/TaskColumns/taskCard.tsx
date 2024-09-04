@@ -1,7 +1,7 @@
 import { format, formatDistanceToNowStrict } from "date-fns"
 import { Priority, Status } from "./taskColumn"
 import { useDispatch } from "react-redux"
-import { setDeadline, setDescription, setPriority, setStatus, setTitle } from "@/app/redux/slice/taskState.slice"
+import { setDeadline, setDescription, setEditId, setPriority, setStatus, setTitle } from "@/app/redux/slice/taskState.slice"
 import { setCreateDrawerVisibility } from "@/app/redux/slice/usernameSlice"
 
 interface TaskCardProps {
@@ -11,11 +11,12 @@ interface TaskCardProps {
     priority: Priority,
     deadline: Date,
     createdAt: string,
-    index: number
-    setactiveCard: any
+    index: number,
+    setactiveCard: any,
+    ticketId: string
 }
 
-export default function TaskCard({title, description, status, priority, deadline, createdAt, index, setactiveCard}: TaskCardProps) {
+export default function TaskCard({title, description, status, priority, deadline, createdAt, index, setactiveCard, ticketId}: TaskCardProps) {
     const dispatch = useDispatch();
     let timeAgo = formatDistanceToNowStrict(new Date(createdAt), {addSuffix: true});
     const formatedDate = format(new Date(deadline), 'yyyy-MM-dd')
@@ -26,6 +27,7 @@ export default function TaskCard({title, description, status, priority, deadline
         dispatch(setPriority(priority));
         dispatch(setDeadline(deadline));
         dispatch(setDescription(description));
+        dispatch(setEditId(ticketId));
         dispatch(setCreateDrawerVisibility(true))
     }
 

@@ -7,7 +7,8 @@ export interface FormState {
         priority: "low" | "medium" | "high" | "urgent" | "",
         deadline?: Date | undefined,
         description: string
-    }
+    },
+    editId: string | null
 }
 const initialState: FormState = {
     createdForm: {
@@ -16,7 +17,8 @@ const initialState: FormState = {
         priority: '',
         deadline: undefined,
         description: ''
-    }
+    },
+    editId: null
 }
 
 const taskStateSlice = createSlice({
@@ -37,9 +39,12 @@ const taskStateSlice = createSlice({
         },
         setDescription: (state, action: PayloadAction<FormState["createdForm"]["description"]>) => {
             state.createdForm.description = action.payload
+        },
+        setEditId: (state, action: PayloadAction<FormState["editId"]>) => {
+            state.editId = action.payload;
         }
     }
 })
 
-export const {setTitle, setStatus, setPriority, setDeadline, setDescription} = taskStateSlice.actions;
+export const {setTitle, setStatus, setPriority, setDeadline, setDescription, setEditId} = taskStateSlice.actions;
 export default taskStateSlice.reducer;
