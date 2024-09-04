@@ -1,3 +1,4 @@
+import { FormState, setDeadline, setDescription, setPriority, setStatus, setTitle } from "@/app/redux/slice/taskState.slice";
 import { setCheckTicketCreateUpdate, setCreateDrawerVisibility } from "@/app/redux/slice/usernameSlice";
 import { RootState } from "@/app/redux/store";
 import { Button } from "@/components/ui/button";
@@ -11,11 +12,11 @@ import { useDispatch, useSelector } from "react-redux";
 
 export default function TicketSidebar() {
     const dispatch = useDispatch();
-    const [date, setDate] = useState<Date | undefined>(undefined)
-    const [title, setTitle] = useState<string>('');
-    const [status, setStatus] = useState<string>('');
-    const [priority, setPriority] = useState<string>('');
-    const [description, setDescription] = useState<string>('');
+    const title = useSelector((state: RootState) => state.taskSlice.createdForm.title);
+    const status = useSelector((state: RootState) => state.taskSlice.createdForm.status);
+    const priority = useSelector((state: RootState) => state.taskSlice.createdForm.priority);
+    const date = useSelector((state: RootState) => state.taskSlice.createdForm.deadline);
+    const description = useSelector((state: RootState) => state.taskSlice.createdForm.description);
     const checkTicketCreateUpdate = useSelector((state: RootState) => state.user.checkTicketCreateUpdate);
 
     
@@ -73,7 +74,7 @@ export default function TicketSidebar() {
 
             <div className="mt-[27px]">
                 <div className="mb-8">
-                    <input value={title} onChange={(e) => setTitle(e.target.value)} className="text-[48px] focus-within:outline-none font-semibold w-full p-2 placeholder-[#cccccc]" placeholder="Title" type="text" />
+                    <input value={title} onChange={(e) => dispatch(setTitle(e.target.value))} className="text-[48px] focus-within:outline-none font-semibold w-full p-2 placeholder-[#cccccc]" placeholder="Title" type="text" />
                 </div>
                 <div className="flex items-center gap-x-10 text-[16px] mb-8">
                     <div className="w-[200px] flex items-center gap-x-5 text-[#666666] text-[16px]">
@@ -83,7 +84,7 @@ export default function TicketSidebar() {
                     <div> 
                         <Select
                             value={status}
-                            onValueChange={(val) => setStatus(val)}
+                            onValueChange={(val) => dispatch(setStatus(val as FormState["createdForm"]["status"]))}
                         >
                             <SelectTrigger>
                                 <SelectValue placeholder='Not selected' />
@@ -105,7 +106,7 @@ export default function TicketSidebar() {
                     <div> 
                         <Select
                             value={priority}
-                            onValueChange={(val) => setPriority(val)}
+                            onValueChange={(val) => dispatch(setPriority(val as FormState["createdForm"]["priority"]))}
                         >
                             <SelectTrigger>
                                 <SelectValue 
@@ -148,7 +149,7 @@ export default function TicketSidebar() {
                                 <Calendar
                                     mode="single"
                                     selected={date ? new Date(date) : undefined}
-                                    onSelect={setDate}
+                                    onSelect={(date) => dispatch(setDeadline(date))}
                                     className="rounded-md border"
                                 />
                             </PopoverContent>
@@ -161,7 +162,7 @@ export default function TicketSidebar() {
                         <span>Description</span>
                     </div>
                     <div>
-                        <input value={description} onChange={(e) => setDescription(e.target.value)} className="text-[16px] focus-within:outline-none w-full px-3 py-2 placeholder-[#cccccc]" placeholder="Not Selected" type="text" />
+                        <input value={description} onChange={(e) => dispatch(setDescription(e.target.value))} className="text-[16px] focus-within:outline-none w-full px-3 py-2 placeholder-[#cccccc]" placeholder="Not Selected" type="text" />
                     </div>
                 </div>
             </div>
