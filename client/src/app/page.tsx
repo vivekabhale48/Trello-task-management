@@ -73,6 +73,7 @@ export default function Home() {
     if(activeCard === null || activeCard === undefined) return;
 
     const taskToMove = task[activeCard];
+    const taskToMoveId = taskToMove._id;
     const updatedTasks = task.filter((t, index) => index !== activeCard);
     updatedTasks.splice(position, 0, {
       ...taskToMove,
@@ -80,16 +81,16 @@ export default function Home() {
     })
     setTask(updatedTasks);
     setTaskCopy(updatedTasks);
-    updateTicketStatus(taskToMove, status)
+    updateTicketStatus(taskToMoveId, status)
   }
 
-  async function updateTicketStatus(taskToMove:TaskMove, status:string) {
+  async function updateTicketStatus(taskToMoveId:string, status:string) {
     const response = await fetch('http://localhost:8080/todo/update-todo', {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({status:status, updateTicketId:taskToMove._id}),
+      body: JSON.stringify({status:status, updateTicketId:taskToMoveId}),
       credentials: 'include',
     })
   }
