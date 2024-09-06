@@ -5,7 +5,7 @@ export interface FormState {
         title: string,
         status: "todo" | "under review" | "in progress" | "finished" | "",
         priority: "low" | "medium" | "high" | "urgent" | "",
-        deadline?: Date | undefined,
+        deadline?: string | undefined,
         description: string
     },
     editId: string | null

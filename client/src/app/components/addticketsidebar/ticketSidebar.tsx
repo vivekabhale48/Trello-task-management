@@ -18,6 +18,7 @@ export default function TicketSidebar() {
     const date = useSelector((state: RootState) => state.taskSlice.createdForm.deadline);
     const description = useSelector((state: RootState) => state.taskSlice.createdForm.description);
     const checkTicketCreateUpdate = useSelector((state: RootState) => state.user.checkTicketCreateUpdate);
+    const editId = useSelector((state: RootState) => state.taskSlice.editId);
 
     
     useEffect(() => {
@@ -29,12 +30,17 @@ export default function TicketSidebar() {
 
     function handleKeyDownFunction(event: KeyboardEvent) {
         if(event.key === 'Enter' && date && title !== '' && status !== '' && priority !== '' && description !== '') {
-            createATicket();
+            if(editId) {
+                updateATicket();
+            }
+            else {
+                createATicket();
+            }
         }
     }
 
     async function createATicket() {
-        const deadline = date?.toISOString();
+        const deadline = date;
         const response = await fetch('http://localhost:8080/todo/create-todo', {
             method: 'POST',
             body: JSON.stringify({title, description, status, priority, deadline}),
@@ -48,6 +54,24 @@ export default function TicketSidebar() {
         console.log(result)
         dispatch(setCheckTicketCreateUpdate(!checkTicketCreateUpdate));
         dispatch(setCreateDrawerVisibility(false))
+    }
+
+    async function updateATicket() {
+        const dateObj = date ? new Date(date) : undefined;
+        const deadline = dateObj?.toISOString();
+
+        const response = await fetch('http://localhost:8080/todo/update-todo', {
+            method: 'PUT',
+            body: JSON.stringify({title, description, status, priority, deadline, updateTicketId:editId}),
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include'
+        })
+        if(response.ok) {
+            dispatch(setCheckTicketCreateUpdate(!checkTicketCreateUpdate));
+            dispatch(setCreateDrawerVisibility(false))
+        }
     }
 
     return (
@@ -149,7 +173,12 @@ export default function TicketSidebar() {
                                 <Calendar
                                     mode="single"
                                     selected={date ? new Date(date) : undefined}
-                                    onSelect={(date) => dispatch(setDeadline(date))}
+                                    onSelect={(date) => {
+                                        if (date) {
+                                          const isoDate = date.toISOString();
+                                          dispatch(setDeadline(isoDate));
+                                        }
+                                    }}
                                     className="rounded-md border"
                                 />
                             </PopoverContent>

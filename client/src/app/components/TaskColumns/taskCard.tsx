@@ -22,10 +22,11 @@ export default function TaskCard({title, description, status, priority, deadline
     const formatedDate = format(new Date(deadline), 'yyyy-MM-dd')
 
     function handleEditClick() {
+        const date = new Date(deadline);
         dispatch(setTitle(title));
         dispatch(setStatus(status));
         dispatch(setPriority(priority));
-        dispatch(setDeadline(deadline));
+        dispatch(setDeadline(date.toString()));
         dispatch(setDescription(description));
         dispatch(setEditId(ticketId));
         dispatch(setCreateDrawerVisibility(true))
