@@ -14,7 +14,7 @@ export default function Register() {
     
     const onsubmit:FormEventHandler<HTMLFormElement> = async(event) => {
         event.preventDefault();
-        const response = await fetch('http://localhost:8080/auth/signup', {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/auth/signup`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

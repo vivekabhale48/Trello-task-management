@@ -42,7 +42,7 @@ export default function Home() {
   }, [])
 
   async function findLoggedInUser() {
-    const response = await fetch('http://localhost:8080/auth/user', {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/auth/user`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -55,7 +55,7 @@ export default function Home() {
   }
 
   async function getAllTickets() {
-    const response = await fetch('http://localhost:8080/todo', {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/todo`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -85,7 +85,7 @@ export default function Home() {
   }
 
   async function updateTicketStatus(taskToMoveId:string, status:string) {
-    const response = await fetch('http://localhost:8080/todo/update-todo', {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/todo/update-todo`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'

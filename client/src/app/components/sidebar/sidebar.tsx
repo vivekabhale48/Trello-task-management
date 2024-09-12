@@ -11,7 +11,7 @@ export default function Sidebar() {
     const username = useSelector((state: RootState) => state.user.username)
 
     const handleLogout = async() => {
-        const response = await fetch('http://localhost:8080/auth/logout', {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/auth/logout`, {
             method: 'POST',
             credentials: 'include'
         })
