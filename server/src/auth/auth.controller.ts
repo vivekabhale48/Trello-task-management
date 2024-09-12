@@ -35,7 +35,7 @@ export class AuthController {
         res.cookie('token', token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'prod',
-            sameSite: 'strict',
+            sameSite: 'none',
             // maxAge: 600000
             maxAge: 3600000
         })
@@ -47,7 +47,7 @@ export class AuthController {
         @Res()
         res: Response
     ) {
-        res.cookie('token', '', {httpOnly: true, secure: true, sameSite: 'strict', maxAge: 0});
+        res.cookie('token', '', {httpOnly: true, secure: true, sameSite: 'none', maxAge: 0});
         res.status(200).json({message: 'Logged out successfully!'});
     }
 
