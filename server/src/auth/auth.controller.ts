@@ -42,14 +42,14 @@ export class AuthController {
         res.send({user, message: 'Login Successful'})
     }
 
-    @Post('logout')
-    async logout(
-        @Res()
-        res: Response
-    ) {
-        res.cookie('token', '', {httpOnly: true, secure: true, sameSite: 'none', maxAge: 0});
-        res.status(200).json({message: 'Logged out successfully!'});
-    }
+    // @Post('logout')
+    // async logout(
+    //     @Res()
+    //     res: Response
+    // ) {
+    //     res.cookie('token', '', {httpOnly: true, secure: true, sameSite: 'none', maxAge: 0});
+    //     res.status(200).json({message: 'Logged out successfully!'});
+    // }
 
     @Get('user')
     @UseGuards(AuthGuard())
