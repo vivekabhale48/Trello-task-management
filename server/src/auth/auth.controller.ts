@@ -36,7 +36,6 @@ export class AuthController {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'prod',
             sameSite: 'none',
-            domain: process.env.CLIENT_URL,
             expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
         })
         res.send({user, message: 'Login Successful'})
