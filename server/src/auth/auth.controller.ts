@@ -35,7 +35,6 @@ export class AuthController {
         res.cookie('token', token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'prod',
-            sameSite: 'none',
             expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
         })
         res.send({user, message: 'Login Successful'})
