@@ -10,12 +10,9 @@ async function bootstrap() {
   console.log('Client URL:', process.env.CLIENT_URL);
 
   app.enableCors({
-    origin: (origin, callback) => {
-      callback(null, origin); // Accept requests from any origin
-    },
-    credentials: true,
-  });
-  
+    origin: ['http://localhost:3000', process.env.CLIENT_URL, 'https://trello-task-management-xi.vercel.app'],
+    credentials: true
+  })
   app.useGlobalPipes(new ValidationPipe());
 
   const config = new DocumentBuilder()
