@@ -4,6 +4,8 @@ import { SignUpDto } from './dto/signup.dto';
 import { LoginDto } from './dto/login.dto';
 import { Response, Request } from 'express';
 import { AuthGuard } from '@nestjs/passport';
+import { ApiOkResponse } from '@nestjs/swagger';
+import { setCookie } from 'nookies';
 
 @Controller('auth')
 export class AuthController {
@@ -24,6 +26,7 @@ export class AuthController {
     }
 
     @Post('/login')
+    @ApiOkResponse({type: LoginDto})
     async login(
         @Body()
         userLoginCreds: LoginDto,
@@ -32,14 +35,14 @@ export class AuthController {
     ):Promise<void> {
         console.log(userLoginCreds);
         const {user, token} = await this.authService.login(userLoginCreds);
-        res.cookie('token', token, {
+        setCookie({res}, 'token', token, {
             path: "/",
             expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
             httpOnly: true,
             sameSite: "none",
             secure: process.env.NODE_ENV === 'prod',
         })
-        res.send({user, message: 'Login Successful'})
+        res.status(200).send({user, message: 'Login Successful'})
     }
 
     @Post('logout')
