@@ -40,7 +40,8 @@ export class AuthController {
             expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
             httpOnly: true,
             sameSite: "none",
-            secure: process.env.NODE_ENV === 'prod',
+            secure: true,
+            domain: '.vvainfo.life'
         })
         res.status(200).send({user, message: 'Login Successful'})
     }
