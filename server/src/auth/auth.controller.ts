@@ -41,7 +41,6 @@ export class AuthController {
             httpOnly: true,
             sameSite: "none",
             secure: true,
-            domain: '.vvainfo.life'
         })
         res.status(200).send({user, message: 'Login Successful'})
     }
