@@ -11,10 +11,11 @@ export default function Register() {
     const [email, getemail] = useState<string>('');
     const [password, getPassword] = useState<string>('');
     const router = useRouter();
-    
+    const baseUrl = process.env.NODE_ENV === 'production' ? process.env.NEXT_PUBLIC_SERVER_URL : 'http://localhost:3000'
+
     const onsubmit:FormEventHandler<HTMLFormElement> = async(event) => {
         event.preventDefault();
-        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/auth/signup`, {
+        const response = await fetch(`${baseUrl}/auth/signup`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

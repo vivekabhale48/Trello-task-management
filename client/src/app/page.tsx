@@ -32,6 +32,7 @@ export default function Home() {
   const [activeCard, setactiveCard] = useState(null);
   const [searchTask, setSearchTask] = useState('');
   const dispatch = useDispatch();
+  const baseUrl = process.env.NODE_ENV === 'production' ? process.env.NEXT_PUBLIC_SERVER_URL : 'http://localhost:3000'
 
   useEffect(() => {
     getAllTickets();
@@ -42,7 +43,7 @@ export default function Home() {
   }, [])
 
   async function findLoggedInUser() {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/auth/user`, {
+    const response = await fetch(`${baseUrl}/auth/user`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -55,7 +56,7 @@ export default function Home() {
   }
 
   async function getAllTickets() {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/todo`, {
+    const response = await fetch(`${baseUrl}/todo`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -85,7 +86,7 @@ export default function Home() {
   }
 
   async function updateTicketStatus(taskToMoveId:string, status:string) {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/todo/update-todo`, {
+    const response = await fetch(`${baseUrl}/todo/update-todo`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'

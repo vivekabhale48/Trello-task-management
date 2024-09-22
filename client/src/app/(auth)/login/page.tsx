@@ -13,9 +13,11 @@ export default function Login() {
     const router = useRouter();
     const dispatch = useDispatch();
 
+    const baseUrl = process.env.NODE_ENV === 'production' ? process.env.NEXT_PUBLIC_SERVER_URL : 'http://localhost:3000'
+
     const onSubmit:FormEventHandler<HTMLFormElement> = async(event) => {
         event.preventDefault();
-        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/auth/login`, {
+        const response = await fetch(`${baseUrl}/auth/login`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

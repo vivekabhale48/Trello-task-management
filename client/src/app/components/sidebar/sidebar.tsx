@@ -9,9 +9,10 @@ export default function Sidebar() {
     const dispatch = useDispatch();
     const router = useRouter();
     const username = useSelector((state: RootState) => state.user.username)
+    const baseUrl = process.env.NODE_ENV === 'production' ? process.env.NEXT_PUBLIC_SERVER_URL : 'http://localhost:3000'
 
     const handleLogout = async() => {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/auth/logout`, {
+        const response = await fetch(`${baseUrl}/auth/logout`, {
             method: 'POST',
             credentials: 'include'
         })

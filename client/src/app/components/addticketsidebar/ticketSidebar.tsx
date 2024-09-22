@@ -19,6 +19,7 @@ export default function TicketSidebar() {
     const description = useSelector((state: RootState) => state.taskSlice.createdForm.description);
     const checkTicketCreateUpdate = useSelector((state: RootState) => state.user.checkTicketCreateUpdate);
     const editId = useSelector((state: RootState) => state.taskSlice.editId);
+    const baseUrl = process.env.NODE_ENV === 'production' ? process.env.NEXT_PUBLIC_SERVER_URL : 'http://localhost:3000'
 
     
     useEffect(() => {
@@ -41,7 +42,7 @@ export default function TicketSidebar() {
 
     async function createATicket() {
         const deadline = date;
-        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/todo/create-todo`, {
+        const response = await fetch(`${baseUrl}/todo/create-todo`, {
             method: 'POST',
             body: JSON.stringify({title, description, status, priority, deadline}),
             headers: {
@@ -60,7 +61,7 @@ export default function TicketSidebar() {
         const dateObj = date ? new Date(date) : undefined;
         const deadline = dateObj?.toISOString();
 
-        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/todo/update-todo`, {
+        const response = await fetch(`${baseUrl}/todo/update-todo`, {
             method: 'PUT',
             body: JSON.stringify({title, description, status, priority, deadline, updateTicketId:editId}),
             headers: {
